@@ -1,0 +1,7 @@
+{
+    "orgName": "ltng-support-unified-links",
+    "edition": "Developer",
+    "orgPreferences" : {
+        "enabled": ["S1DesktopEnabled"]
+    }
+}
