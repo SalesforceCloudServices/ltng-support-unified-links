@@ -28,7 +28,7 @@ global with sharing class ltng_DemoSetupCtrl {
     global static final String PERMISSION_SET_NAME = 'LightningSupportDemoParticipant';//'YOUR_PERMISSION_SET_NAME';
     
     
-    //-- @CHANGE: replace YOUR_SOBJECT_API_NAME with the Durable Name
+    //-- @CHANGE: replace YOUR_SOBJECT_API_NAME with the SObject Durable Name
     //-- 	of the objects you will create - (if objects are created)
     //--    ex: MyCustomObject__c
     //--    (e.g.:  SELECT DeveloperName, DurableId FROM EntityDefinition WHERE DeveloperName = 'Object API Name')
@@ -39,7 +39,7 @@ global with sharing class ltng_DemoSetupCtrl {
      **/
     global static final String CHILD_SOBJECT_NAME  = 'YOUR_SOBJECT_API_NAME';
     
-    //-- @CHANGE: replace YOUR_RECORD_TYPE_NAME with the Developer Name
+    //-- @CHANGE: replace YOUR_RECORD_TYPE_NAME with the RecordType Developer Name
     //--	of the objects you will create - (if objects / record types are used)
     //--	ex: 'Master'
     //--	(e.g: SELECT Id, DeveloperName, Name, SObjectType FROM RecordType WHERE SObjectType = 'YOUR_RECORD_TYPE_NAME'
@@ -93,7 +93,7 @@ global with sharing class ltng_DemoSetupCtrl {
             return step;
         }
         
-        //-- @CHANGE: implement what records to delete
+        //-- @CHANGE: implement how to delete all records
         //-- 	(the following is an example set of code)
         
         /*
@@ -231,7 +231,7 @@ global with sharing class ltng_DemoSetupCtrl {
         return(step);
     }
     
-    //-- @CHANGE: add in any other steps you'd like
+    //-- @CHANGE: add in any additional steps
     /**
      * Example step
      * @param getInfoOnly (Boolean) - whether to report what would be done (true) or run the step (false)
