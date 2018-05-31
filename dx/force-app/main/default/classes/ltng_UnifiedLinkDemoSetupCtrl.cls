@@ -4,9 +4,9 @@
 /*
  * //-- CHANGE
  * //-- ensure the class name matches the name of the Setup page + CTRL
- * //-- ex: ltng_DemoSetupCtrl
+ * //-- ex: ltng_UnifiedLinkDemoSetupCtrl
  **/
-global with sharing class ltng_DemoSetupCtrl {
+global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
 
     //-- static
     

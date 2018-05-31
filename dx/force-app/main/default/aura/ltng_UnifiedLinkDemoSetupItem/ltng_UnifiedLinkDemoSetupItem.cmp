@@ -1,7 +1,7 @@
 <!--
 /**
  * Component that represents a single item to be completed during the setup
- * @component: ltng_VF_toLightningSetupItem
+ * @component: ltng_UnfiedLinkDemoSetupItem
  **/
 -->
 <aura:component >

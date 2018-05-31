@@ -6,11 +6,11 @@
         <logoVersion>1</logoVersion>
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
     </brand>
-    <description>Example Lightning Support Demo App</description>
+    <description>Inter linking between Classic / Lightning / external apps.</description>
     <formFactors>Large</formFactors>
-    <label>Demo App</label>
+    <label>Unified Links Demo App</label>
     <navType>Standard</navType>
-    <tabs>Demo_Setup</tabs>
+    <tabs>ltng_UnifiedLinkDemoSetup</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Demo_App_UtilityBar</utilityBar>
 </CustomApplication>

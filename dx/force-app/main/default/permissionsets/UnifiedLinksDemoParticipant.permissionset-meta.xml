@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>ltng_UnifiedLinksDemoApp</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <description>Person that can see the Unified Links demo.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ltng_UnifiedLinkScheme__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ltng_UnifiedLinkScheme__c.ExternalId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ltng_UnifiedLinkScheme__c.PreferredSortIndex__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Unified Links Demo Participant</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>ltng_UnifiedLinkScheme__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <tabSettings>
+        <tab>ltng_UnifiedLinkDemoSetup</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>ltng_UnifiedLinkScheme__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

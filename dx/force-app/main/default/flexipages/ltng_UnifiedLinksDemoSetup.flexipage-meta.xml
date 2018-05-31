@@ -3,12 +3,12 @@
     <description>Page that sets up the Lightning Support demo</description>
     <flexiPageRegions>
         <componentInstances>
-            <componentName>ltng_DemoSetup</componentName>
+            <componentName>ltng_UnifiedLinkDemoSetup</componentName>
         </componentInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Demo Setup</masterLabel>
+    <masterLabel>Unified Links Demo Setup</masterLabel>
     <template>
         <name>flexipage:defaultAppHomeTemplate</name>
     </template>
