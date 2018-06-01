@@ -6,6 +6,7 @@
  * <p>To see the URL schemes available for Salesforce1, see:
  *    https://resources.docs.salesforce.com/208/latest/en-us/sfdc/pdf/salesforce1_url_schemes.pdf
  * </p>
+ * <p>Review further: https://joebuschmann.com/salesforce-lightning-navigation-events-in-a-visualforce-page/</p>
  * @class ltng_UnifiedLinksPortalCtrl
  **/
 public with sharing class ltng_UnifiedLinksPortalCtrl {
