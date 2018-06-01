@@ -11,6 +11,8 @@
     <label>Unified Links Demo App</label>
     <navType>Standard</navType>
     <tabs>ltng_UnifiedLinkDemoSetup</tabs>
+    <tabs>ltng_UnifiedLinkDemos</tabs>
+    <tabs>ltng_UnifiedLinkScheme__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Demo_App_UtilityBar</utilityBar>
 </CustomApplication>

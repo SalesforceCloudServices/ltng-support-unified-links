@@ -15,11 +15,6 @@
         <field>ltng_UnifiedLinkScheme__c.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>ltng_UnifiedLinkScheme__c.PreferredSortIndex__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Unified Links Demo Participant</label>
     <objectPermissions>
@@ -33,6 +28,10 @@
     </objectPermissions>
     <tabSettings>
         <tab>ltng_UnifiedLinkDemoSetup</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>ltng_UnifiedLinkDemos</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

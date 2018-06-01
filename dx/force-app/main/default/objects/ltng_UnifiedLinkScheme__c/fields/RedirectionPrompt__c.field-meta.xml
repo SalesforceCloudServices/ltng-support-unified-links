@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RedirectionPrompt__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Descriptive message to provide to the user with the {{FIELD}} replacements.
+So they know where they are going.</inlineHelpText>
+    <label>Redirection Prompt</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

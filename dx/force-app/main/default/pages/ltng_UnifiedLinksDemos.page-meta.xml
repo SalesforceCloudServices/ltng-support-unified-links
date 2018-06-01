@@ -3,5 +3,6 @@
     <apiVersion>42.0</apiVersion>
     <availableInTouch>true</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>ltng_UnifiedLinksPortal</label>
+    <description>List of different links that demo the redirections.</description>
+    <label>Unified Link Demos</label>
 </ApexPage>

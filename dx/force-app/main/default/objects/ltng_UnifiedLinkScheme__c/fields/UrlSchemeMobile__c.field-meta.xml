@@ -4,7 +4,7 @@
     <externalId>false</externalId>
     <inlineHelpText>The URL format for Mobile with handlebars {{JSON_FIELD}} replacements</inlineHelpText>
     <label>URL Scheme Mobile</label>
-    <required>true</required>
+    <required>false</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>TextArea</type>

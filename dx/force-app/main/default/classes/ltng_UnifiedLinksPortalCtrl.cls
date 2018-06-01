@@ -77,7 +77,7 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     }
 
     public PageReference redirectUser(){
-        PageReference result = null;//new PageReference(this.redirectionURL);
+        PageReference result = new PageReference(this.redirectionURL);
 
         if( this.debugMode ){
             result = null;

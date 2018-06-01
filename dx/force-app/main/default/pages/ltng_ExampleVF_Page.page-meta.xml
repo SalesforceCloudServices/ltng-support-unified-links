@@ -3,5 +3,6 @@
     <apiVersion>42.0</apiVersion>
     <availableInTouch>true</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
-    <label>ltng_UnifiedLinksPortal</label>
+    <description>Example Visualforce Page to redirect to</description>
+    <label>Example VF Page</label>
 </ApexPage>
