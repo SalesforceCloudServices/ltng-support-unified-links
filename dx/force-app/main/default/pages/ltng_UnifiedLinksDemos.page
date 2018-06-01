@@ -30,14 +30,46 @@
                 <div>
                     <div class='slds-text-heading_medium'>Visualforce</div>
                     <p>
-                        <a href='https://power-customization-4792-dev-ed--c.cs1.visual.force.com/apex/ltng_UnifiedLinksPortal?debug=true&redirParams=eyAiUGFnZU5hbWUiOiAibHRuZ19FeGFtcGxlVkZfUGFnZSIsICJQYXJhbWV0ZXJzIjogIj9tZXNzYWdlPUhpIGV2ZXJ5Ym9keSEiIH0%3D&redirType=VisualForce'>VisualForce</a> - 
-                        <a href='/apex/ltng_UnifiedLinksPortal?redirParams=eyAiaWQiOiAiYTAwUzAwMDAwMDRyOXFGSUFRIiB9&redirType=SObject'>Record</a>
+                        <a target='_blank' href='https://power-customization-4792-dev-ed--c.cs1.visual.force.com/apex/ltng_UnifiedLinksPortal?debug=true&redirParams=eyAiUGFnZU5hbWUiOiAibHRuZ19FeGFtcGxlVkZfUGFnZSIsICJQYXJhbWV0ZXJzIjogIj9tZXNzYWdlPUhpIGV2ZXJ5Ym9keSEiIH0%3D&redirType=VisualForce'>VisualForce</a> - 
+                        <a target='_blank' href='/apex/ltng_UnifiedLinksPortal?redirParams=eyAiaWQiOiAiYTAwUzAwMDAwMDRyOXFGSUFRIiB9&redirType=SObject'>Record</a>
                     </p>
                     <form class='slds-form--stacked'>
                         <div class='slds-form-element'>
                             <div class='slds-form-element_control'>
                                 <textarea class='slds-textarea'>
                                     { "PageName": "ltng_ExampleVF_Page", "Parameters": "?message=Hi Everybody!" }
+                                </textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div class='slds-text-heading_medium'>SObject</div>
+                    <p>
+                        <a target='_blank' href='https://power-customization-4792-dev-ed--c.cs1.visual.force.com/apex/ltng_UnifiedLinksPortal?debug=true&redirParams=eyAiaWQiOiAiYTAwUzAwMDAwMDRyOXB2SUFBIiB9&redirType=SObject'>SObject</a> - 
+                        <a target='_blank' href='/apex/ltng_UnifiedLinksPortal?redirParams=eyAiaWQiOiAiYTAwUzAwMDAwMDRyOXB2SUFBIiB9&redirType=SObject'>Record</a>
+                    </p>
+                    <form class='slds-form--stacked'>
+                        <div class='slds-form-element'>
+                            <div class='slds-form-element_control'>
+                                <textarea class='slds-textarea'>
+                                    { "id": "a00S0000004r9pvIAA" }
+                                </textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div class='slds-text-heading_medium'>ObjectManagerHome</div>
+                    <p>
+                        <a target='_blank' href='https://power-customization-4792-dev-ed--c.cs1.visual.force.com/apex/ltng_UnifiedLinksPortal?debug=true&redirParams=e30%3D&redirType=ObjectManagerHome'>ObjectManagerHome</a> - 
+                        <a target='_blank' href='/apex/ltng_UnifiedLinksPortal?redirParams=e30%3D&redirType=ObjectManagerHome'>Record</a>
+                    </p>
+                    <form class='slds-form--stacked'>
+                        <div class='slds-form-element'>
+                            <div class='slds-form-element_control'>
+                                <textarea class='slds-textarea'>
+                                    {}
                                 </textarea>
                             </div>
                         </div>
