@@ -48,13 +48,13 @@
                         <div class='slds-form-element'>
                             <label class='slds-form-element__label' for='debugRedirectType'>Type</label>
                             <div class='slds-form-element__control'>
-                                <apex:inputText styleClass='slds-input' name="debugRedirectType" value='{!debugRedirectType}' />
+                                <apex:inputText styleClass='slds-input debugRedirectType' id="debugRedirectType" value='{!debugRedirectType}' />
                             </div>
                         </div>
                         <div class='slds-form-element'>
                             <label class='slds-form-element__label' for='debugRedirectParams'>Params (JSON)</label>
                             <div class='slds-form-element__control'>
-                                <apex:inputTextArea styleClass='slds-textarea' name="debugRedirectType" value='{!debugRedirectParams}' />
+                                <apex:inputTextArea styleClass='slds-textarea debugRedirectParams' id="debugRedirectParams" value='{!debugRedirectParams}' />
                             </div>
                         </div>
                         <div class='slds-form-element'>

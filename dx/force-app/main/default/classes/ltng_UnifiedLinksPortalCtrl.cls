@@ -250,12 +250,22 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
      * @return PageReference
      **/
     public PageReference calculateRedirect(){
-        this.redirectionURL = '?debug=true&' + PARAM_REDIRECTION_TYPE + '=' + this.debugRedirectType +
+
+        this.redirectionURL = ApexPages.currentPage().getUrl();
+        if( this.redirectionURL.indexOf('?') > -1 ){
+            this.redirectionURL = this.redirectionURL.left(this.redirectionURL.indexOf('?'));
+        }
+        System.debug('this.redirectionURL'); System.debug(this.redirectionURL);
+
+        this.redirectionURL += '?' + PARAM_DEBUG + '=true&' +
+            PARAM_REDIRECTION_TYPE + '=' + this.debugRedirectType +
             '&' + PARAM_REDIRECTION_PARAMS + '=' +
             EncodingUtil.base64Encode( Blob.valueOf(this.debugRedirectParams));
-        
         System.debug('redirectionURL'); System.debug(this.redirectionURL);
 
-        return( new PageReference(this.redirectionURL) );
+        PageReference result = new PageReference(this.redirectionURL);
+        result.setRedirect(true);
+
+        return( result );
     }
 }
