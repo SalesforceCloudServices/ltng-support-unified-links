@@ -155,7 +155,7 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
         Map<String,String> params = ApexPages.currentPage().getParameters();
 
         String paramsStr;
-        String results = null;
+        String results = '{}';
 
         if( params.containsKey(PARAM_REDIRECTION_PARAMS) ){
             paramsStr = params.get(PARAM_REDIRECTION_PARAMS);
@@ -188,7 +188,7 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
 
         //System.debug('decodedParams'); System.debug(decodedParams);
 
-        //try {
+        try {
             Map<String, Object> jsonObjMap = (Map<String,Object>)JSON.deserializeUntyped(decodedParams);
             //System.debug('jsonMap'); System.debug(String.valueOf(jsonMap));
 
@@ -197,10 +197,10 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
                 mapValue = (String)jsonObjMap.get(mapKey);
                 results.put(mapKey,mapValue);
             }
-        //} catch(Exception err){
-        //    System.debug('exception occurred:');
-        //    System.debug(err.getMessage());
-        //}
+        } catch(Exception err){
+            System.debug('exception occurred:');
+            System.debug(err.getMessage());
+        }
 
         //System.debug('results'); System.debug(results);
 
