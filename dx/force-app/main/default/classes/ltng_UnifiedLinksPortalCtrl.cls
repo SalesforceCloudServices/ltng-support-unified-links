@@ -256,25 +256,44 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
 
     /**
      * computes the debug form to calculate a redirect
+     * @param includeDebug;
      * @return PageReference
      **/
-    public PageReference calculateRedirect(){
+    public PageReference calculateRedirect( Boolean includeDebug ){
+        PageReference resultReference;
 
-        this.redirectionURL = ApexPages.currentPage().getUrl();
-        if( this.redirectionURL.indexOf('?') > -1 ){
-            this.redirectionURL = this.redirectionURL.left(this.redirectionURL.indexOf('?'));
+        String result = ApexPages.currentPage().getUrl();
+        if( result.indexOf('?') > -1 ){
+            result = result.left(result.indexOf('?'));
         }
-        System.debug('this.redirectionURL'); System.debug(this.redirectionURL);
+        //System.debug('result'); System.debug(result);
 
-        this.redirectionURL += '?' + PARAM_DEBUG + '=true&' +
-            PARAM_REDIRECTION_TYPE + '=' + this.debugRedirectType +
+        result += '?' + PARAM_REDIRECTION_TYPE + '=' + this.debugRedirectType +
             '&' + PARAM_REDIRECTION_PARAMS + '=' +
             EncodingUtil.base64Encode( Blob.valueOf(this.debugRedirectParams));
-        System.debug('redirectionURL'); System.debug(this.redirectionURL);
+        //System.debug('result'); System.debug(result);
 
-        PageReference result = new PageReference(this.redirectionURL);
-        result.setRedirect(true);
+        if( includeDebug ){
+            result += '&' + PARAM_DEBUG + '=true';
+        }
 
-        return( result );
+        resultReference = new PageReference(result);
+        resultReference.setRedirect(true);
+
+        return( resultReference );
+    }
+
+    /**
+     * Redirects the Debug Form - to the Debug Page.
+     **/
+    public PageReference redirectDebugToDebug(){
+        return( calculateRedirect(true) );
+    }
+
+    /**
+     * Redirects the Debug Form - to the target page.
+     **/
+    public PageReference redirectDebugToTarget(){
+        return( calculateRedirect(false) );
     }
 }

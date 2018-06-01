@@ -62,7 +62,10 @@
                             </div>
                         </div>
                         <div class='slds-form-element'>
-                            <apex:commandButton styleClass="slds-button slds-button--brand" action="{!calculateRedirect}" value="Submit" />
+                            <apex:commandButton styleClass="slds-button slds-button--brand" action="{!redirectDebugToDebug}" value="Review" />
+                            |
+                            <apex:commandButton styleClass="slds-button slds-button--brand" action="{!redirectDebugToTarget}" value="Execute" />
+                            
                         </div>
                     </apex:form>
                 </apex:pageblock>
