@@ -47,12 +47,17 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
         Boolean redirectWithLightning = isLightningUser(null);
         String redirectionType = getRedirectionType();
         ltng_UnifiedLinkScheme__c targetScheme = findUnifiedScheme(redirectionType);
-        Map<String,String> redirectionParams = getRedirectionParameters();
+        String redirectionParamsStr = getRedirectionParameters();
+        Map<String,String> redirectionParams = convertJSON_toMap(redirectionParamsStr);
         String redirectionTemplate;
 
         this.redirectionPrompt = DEFAULT_REDIRECTION_PROMPT;
         this.redirectionURL = DEFAULT_REDIRECTION;
         this.debugMode = shouldRunInDebugMode();
+
+        //-- set debug info
+        this.debugRedirectType = redirectionType;
+        this.debugRedirectParams = redirectionParamsStr;
 
         if( targetScheme != null ){
             System.debug('targetScheme is not null');
@@ -144,20 +149,26 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     /**
      * Determines the parameters used for the redirection.
      * <p>These are used in the string replacelment</p>
-     * @return Map<String,String> - map from the base64 decoded parameters sent.
+     * @return String - Base64 Decoded JSON that was received.
      **/
-    public Map<String,String> getRedirectionParameters(){
+    public String getRedirectionParameters(){
         Map<String,String> params = ApexPages.currentPage().getParameters();
 
         String paramsStr;
-        Map<String,String> results = new Map<String,String>();
+        String results = null;
 
         if( params.containsKey(PARAM_REDIRECTION_PARAMS) ){
             paramsStr = params.get(PARAM_REDIRECTION_PARAMS);
 
             System.debug('paramsStr'); System.debug(paramsStr);
 
-            results = convertJSON_toMap(paramsStr);
+            try {
+                results = EncodingUtil.base64Decode(paramsStr).toString();
+            } catch( Exception err){
+                System.debug('param:' + PARAM_REDIRECTION_PARAMS + ': was not base64');
+            }
+
+            //-- @TODO: review for better functional place to put this.
         }
 
         return( results );
@@ -165,22 +176,20 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
 
     /**
      * Converts a base64 JSON object to a Map<String,String>
-     * @param (String) base64JSON
+     * @param (String) decodedParams
      * @return Map<String,String>
      **/
-    public static Map<String,String> convertJSON_toMap(String base64JSON){
+    public static Map<String,String> convertJSON_toMap(String decodedParams){
 
         //-- @TODO: investigate whether we can simply use Map<String,Object> instead
         //-- as we can do the string replacement later.
 
         Map<String,String> results = new Map<String,String>();
 
-        System.debug('base64JSON'); System.debug(base64JSON);
+        //System.debug('decodedParams'); System.debug(decodedParams);
 
         //try {
-            String decodedStr = EncodingUtil.base64Decode(base64JSON).toString();
-            //System.debug('decodedStr'); System.debug(String.valueOf(decodedStr));
-            Map<String, Object> jsonObjMap = (Map<String,Object>)JSON.deserializeUntyped(decodedStr);
+            Map<String, Object> jsonObjMap = (Map<String,Object>)JSON.deserializeUntyped(decodedParams);
             //System.debug('jsonMap'); System.debug(String.valueOf(jsonMap));
 
             String mapValue;
@@ -193,7 +202,7 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
         //    System.debug(err.getMessage());
         //}
 
-        System.debug('results'); System.debug(results);
+        //System.debug('results'); System.debug(results);
 
         return( results );
     }
