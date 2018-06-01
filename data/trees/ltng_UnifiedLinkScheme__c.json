@@ -1,0 +1,41 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "ltng_UnifiedLinkScheme__c",
+                "referenceId": "ltng_UnifiedLinkScheme__cRef1"
+            },
+            "Description__c": "Redirects the user to the Object Manager",
+            "ExternalId__c": "ObjectManagerHome",
+            "Name": "Object Manager Home",
+            "RedirectionPrompt__c": "We are about to redirect you to the Setup: Object Manager page",
+            "UrlSchemeClassic__c": "/p/setup/custent/CustomObjectsPage?setupid=CustomObjects",
+            "UrlSchemeLightningExperience__c": "/one/one.app#/setup/ObjectManager/home"
+        },
+        {
+            "attributes": {
+                "type": "ltng_UnifiedLinkScheme__c",
+                "referenceId": "ltng_UnifiedLinkScheme__cRef2"
+            },
+            "Description__c": "Navigates the user to a given SObject",
+            "ExternalId__c": "SObject",
+            "Name": "SObject",
+            "RedirectionPrompt__c": "You are being redirected to record: {{id}}",
+            "UrlSchemeClassic__c": "/{{id}}",
+            "UrlSchemeLightningExperience__c": "/lightning/r/{{id}}/view",
+            "UrlSchemeMobile__c": "salesforce1://sobject/{{id}}/view"
+        },
+        {
+            "attributes": {
+                "type": "ltng_UnifiedLinkScheme__c",
+                "referenceId": "ltng_UnifiedLinkScheme__cRef3"
+            },
+            "Description__c": "Redirects the user to a VisualForce page",
+            "ExternalId__c": "VisualForce",
+            "Name": "VisualForce",
+            "RedirectionPrompt__c": "Now redirecting you to {{PageName}}",
+            "UrlSchemeClassic__c": "/apex/{{PageName}}{{Parameters}}",
+            "UrlSchemeLightningExperience__c": "/apex/{{PageName}}{{Parameters}}"
+        }
+    ]
+}
