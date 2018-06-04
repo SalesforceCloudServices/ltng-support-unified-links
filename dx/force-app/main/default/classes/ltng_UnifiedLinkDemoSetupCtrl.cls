@@ -70,8 +70,9 @@ global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
     	//-- and info about what was run, including results/errors/etc., are returned.
     	
         SetupStep[] results = new SetupStep[]{
-            removeAllBaseRecords(getInfoOnly),
-            createBaseRecords(getInfoOnly),
+            removeAllUrlSchemeRecords(getInfoOnly),
+            createUrlSchemeRecords(getInfoOnly),
+            resetGeneratedLinks(getInfoOnly),
             addUserToPermissionSet(getInfoOnly)
             //-- @CHANGE: add in additional steps as desired
         };
@@ -81,12 +82,12 @@ global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
     //-- actual steps to run
 
     /**
-     * Remove any of the base records that are currently there.
+     * Remove any of the urlScheme records that are currently there.
      * @param getInfoOnly (Boolean) - whether to report what would be done (true) or run the step (false)
      **/
-    global static SetupStep removeAllBaseRecords( boolean getInfoOnly){
+    global static SetupStep removeAllUrlSchemeRecords( boolean getInfoOnly){
         SetupStep step = new SetupStep( new Map<String,Object>{
-            'title' => 'Remove any existing base objects'
+            'title' => 'Remove any existing urlScheme objects'
         });
 
         if(getInfoOnly){
@@ -96,34 +97,32 @@ global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
         //-- @CHANGE: implement how to delete all records
         //-- 	(the following is an example set of code)
         
-        /*
         SObject[] recordsToDelete = null;
         try {
             recordsToDelete = [
                 SELECT Id
-                FROM ltng_Vf_ToLightningBase__c
+                FROM ltng_UnifiedLinkScheme__c
             ];
             
             delete recordsToDelete;
         } catch(Exception err){
-            step.errMsg = 'Error occurred while attempting to delete all base records';
+            step.errMsg = 'Error occurred while attempting to delete Unified Link Scheme records';
             step.devErrMsg = err.getMessage();
             //-- do nothing for now.
             System.debug(step.errMsg);
         }
-        */
-        
+
         step.markCompleted();
         return(step);
     }
 
     /**
-     * Create the base records.
+     * Create the urlScheme records.
      * @param getInfoOnly (Boolean) - whether to report what would be done (true) or run the step (false)
      **/
-    global static SetupStep createBaseRecords( boolean getInfoOnly ){
+    global static SetupStep createUrlSchemeRecords( boolean getInfoOnly ){
         SetupStep step = new SetupStep( new Map<String,Object>{
-            'title' => 'Create Base Objects',
+            'title' => 'Create UrlScheme Objects',
             'descr' => 'Create the objects that the demos start from'
         });
 
@@ -156,16 +155,16 @@ global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
         It is recommended that you store all queries used for extracting data
         and store them separately from your data (in case you need it again)
         
-        data/queries/ltng_Vf_ToLightningBase__c.txt
-        SELECT Example_Value__c FROM ltng_Vf_ToLightningBase__c
+        data/queries/ltng_UnifiedLinkScheme__c.txt
+        SELECT Example_Value__c FROM ltng_UnifiedLinkScheme__c
         
         Say that the query you ran gave you this:
-        sfdx force:data:tree:export -q queries/ltng_Vf_ToLightningBase__c.txt -d tree/
+        sfdx force:data:tree:export -q queries/ltng_UnifiedLinkScheme__c.txt -d tree/
         
         { "records": [	{
 							"attributes": {
-								"type": "ltng_Vf_ToLightningBase__c",
-								"referenceId": "ltng_Vf_ToLightningBase__cRef1"
+								"type": "ltng_UnifiedLinkScheme__c",
+								"referenceId": "ltng_UnifiedLinkScheme__cRef1"
 							},
 							"Example_Value__c": 1000
 		}	]	}
@@ -174,15 +173,15 @@ global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
 		{ "Example_Value__c": 1000 }
 		
 		You can then convert it to an SObject like so:
-		ltng_Vf_ToLightningBase__c[] baseRecords = new ltng_Vf_ToLightningBase__c[]{};
+		ltng_UnifiedLinkScheme__c[] urlSchemeRecords = new ltng_UnifiedLinkScheme__c[]{};
 		
-		baseRecords.add( new ltng_Vf_ToLightningBase__c(
+		urlSchemeRecords.add( new ltng_UnifiedLinkScheme__c(
 			Example_Value__c = 1000
 		));
 		
 		or
 		
-		baseRecords.add( new ltng_Vf_ToLightningBase__c(
+		urlSchemeRecords.add( new ltng_UnifiedLinkScheme__c(
 			Example_Value__c = 1000,
 			RecordTypeId = recordTypeMap.get(RT_NAME)
 		));
@@ -191,42 +190,91 @@ global with sharing class ltng_UnifiedLinkDemoSetupCtrl {
 		//-- @CHANGE: implement the records to be created
 		//--	(the following is an example set of code)
 		
-		/*
-        ltng_Vf_ToLightningBase__c[] baseRecords = new ltng_Vf_ToLightningBase__c[]{};
-        ltng_Vf_ToLightningBase__c baseRecord;
+		ltng_UnifiedLinkScheme__c[] urlSchemeRecords = new ltng_UnifiedLinkScheme__c[]{};
+        ltng_UnifiedLinkScheme__c urlSchemeRecord;
         
-		baseRecord = new ltng_Vf_ToLightningBase__c(
-			Example_Value__c = 1000
-		);
-		
-		OR
-		
-		baseRecord = new ltng_Vf_ToLightningBase__c(
-			Example_Value__c = 1000,
-			recordTypeId = recordTypeMap.get(RT_NAME) or other RecordTypeNames...
-		);
-        
-        baseRecords.add(baseRecord);
-        
-        OR
-        
-        baseRecords.add(new ltng_Vf_ToLightningBase__c(...));
-        ...
+        urlSchemeRecords.add(new ltng_UnifiedLinkScheme__c(
+            Description__c = 'Redirects the user to the Object Manager',
+            ExternalId__c = 'ObjectManagerHome',
+            Name = 'Object Manager Home',
+            RedirectionPrompt__c = 'We are about to redirect you to the Setup: Object Manager page',
+            UrlSchemeClassic__c = '/p/setup/custent/CustomObjectsPage?setupid=CustomObjects',
+            UrlSchemeLightningExperience__c = '/one/one.app#/setup/ObjectManager/home',
+            ExampleParamsForDemo__c = '{}'
+        ));
+        urlSchemeRecords.add(new ltng_UnifiedLinkScheme__c(
+            Description__c = 'Navigates the user to a given SObject',
+            ExternalId__c = 'SObject',
+            Name = 'SObject',
+            RedirectionPrompt__c = 'You are being redirected to record: {{id}}',
+            UrlSchemeClassic__c = '/{{id}}',
+            UrlSchemeLightningExperience__c = '/lightning/r/{{id}}/view',
+            UrlSchemeMobile__c = 'salesforce1://sobject/{{id}}/view',
+            ExampleParamsForDemo__c = '{ "id": "TARGET_SOBJECT_RECORD_ID" }'
+        ));
+        urlSchemeRecords.add(new ltng_UnifiedLinkScheme__c(
+            Description__c = 'Redirects the user to a VisualForce page',
+            ExternalId__c = 'VisualForce',
+            Name = 'VisualForce',
+            RedirectionPrompt__c = 'Now redirecting you to {{PageName}}',
+            UrlSchemeClassic__c = '/apex/{{PageName}}{{Parameters}}',
+            UrlSchemeLightningExperience__c = '/apex/{{PageName}}{{Parameters}}',
+            ExampleParamsForDemo__c = '{ "PageName": "ltng_ExampleVF_Page", "Parameters": "?message=Hi Everybody!" }'
+        ));
         
         //-- finally add in the records
         
         try {
-            insert baseRecords;
+            insert urlSchemeRecords;
 
-            //step.seeMore = baseRecords[0].Id;
+            //step.seeMore = urlSchemeRecords[0].Id;
         } catch( Exception err){
-            step.errMsg = 'error occurred while creating base records';
+            step.errMsg = 'error occurred while creating urlScheme records';
             step.devErrMsg = err.getMessage();
             System.debug(step.errMsg);
         }
-        */
         
 
+        step.markCompleted();
+        return(step);
+    }
+
+    /**
+     * Reset UrlSchemes for Generated Records
+     * @param getInfoOnly (Boolean) - whether to report what would be done (true) or run the step (false)
+     **/
+    global static SetupStep resetGeneratedLinks( boolean getInfoOnly ){
+    	//-- @SEE SetupStep below - displayed in lightning component DemoSetupItem.cmp
+    	SetupStep step = new SetupStep( new Map<String,Object>{
+            'title' => 'Reset Generated Links',
+            'descr' => 'Recreates the Generated Links based on records since created.',
+            'reasoning' => 'We want to link to records created within this process. So we need to determine those IDs again to recreate them.'
+        });
+    
+        if( getInfoOnly ){
+        	return(step);
+        }
+        
+        ltng_UnifiedLinkScheme__c sObjectScheme;
+
+        try {
+        	sObjectScheme = [
+                SELECT Id, ExampleParamsForDemo__c
+                FROM ltng_UnifiedLinkScheme__c
+                WHERE ExternalId__c = 'SObject'
+            ];
+
+            sObjectScheme.ExampleParamsForDemo__c = sObjectScheme.ExampleParamsForDemo__c.replace(
+                'TARGET_SOBJECT_RECORD_ID', sObjectScheme.Id
+            );
+
+            update sObjectScheme;
+
+        } catch(Exception err){
+        	step.errMsg = 'Could not do stuff';
+        	step.devErrMsg = err.getMessage();
+        }
+        
         step.markCompleted();
         return(step);
     }

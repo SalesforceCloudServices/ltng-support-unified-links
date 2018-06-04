@@ -10,7 +10,8 @@
             "Name": "Object Manager Home",
             "RedirectionPrompt__c": "We are about to redirect you to the Setup: Object Manager page",
             "UrlSchemeClassic__c": "/p/setup/custent/CustomObjectsPage?setupid=CustomObjects",
-            "UrlSchemeLightningExperience__c": "/one/one.app#/setup/ObjectManager/home"
+            "UrlSchemeLightningExperience__c": "/one/one.app#/setup/ObjectManager/home",
+            "ExampleParamsForDemo__c": "{}"
         },
         {
             "attributes": {
@@ -23,7 +24,8 @@
             "RedirectionPrompt__c": "You are being redirected to record: {{id}}",
             "UrlSchemeClassic__c": "/{{id}}",
             "UrlSchemeLightningExperience__c": "/lightning/r/{{id}}/view",
-            "UrlSchemeMobile__c": "salesforce1://sobject/{{id}}/view"
+            "UrlSchemeMobile__c": "salesforce1://sobject/{{id}}/view",
+            "ExampleParamsForDemo__c": "{ \"id\": \"a00R000000Eo2IPIAZ\" }"
         },
         {
             "attributes": {
@@ -35,7 +37,8 @@
             "Name": "VisualForce",
             "RedirectionPrompt__c": "Now redirecting you to {{PageName}}",
             "UrlSchemeClassic__c": "/apex/{{PageName}}{{Parameters}}",
-            "UrlSchemeLightningExperience__c": "/apex/{{PageName}}{{Parameters}}"
+            "UrlSchemeLightningExperience__c": "/apex/{{PageName}}{{Parameters}}",
+            "ExampleParamsForDemo__c": "{ \"PageName\": \"ltng_ExampleVF_Page\", \"Parameters\": \"?message=Hi Everybody!\" }"
         }
     ]
 }

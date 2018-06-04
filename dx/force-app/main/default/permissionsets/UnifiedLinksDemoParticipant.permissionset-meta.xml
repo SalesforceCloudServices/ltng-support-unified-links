@@ -12,6 +12,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ltng_UnifiedLinkScheme__c.ExampleParamsForDemo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ltng_UnifiedLinkScheme__c.ExternalId__c</field>
         <readable>true</readable>
     </fieldPermissions>

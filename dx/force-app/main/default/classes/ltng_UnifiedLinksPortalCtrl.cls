@@ -14,10 +14,15 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     /** Permission that determines if the user has access to LEX **/
     public static final String PERM_LEX_ENABLED = 'LightningExperienceUser';
 
+    /** default url encoding/decoding scheme **/
+    public static final String DEFAULT_URL_ENCODING_SCHEME = 'UTF-8';
+
     /** Default page to redirect someone to **/
     public static final String DEFAULT_REDIRECTION = '/a00';
     /** Default prompt for redirection **/
     public static final String DEFAULT_REDIRECTION_PROMPT = 'We were unable to redirect you. Please contact your administrator';
+    /** default redirection parameters **/
+    public static final String DEFAULT_REDIRECTION_PARAMS = '{}';
 
     /** start of mustache template **/
     public static final String MUSTACHE_START = '{{';
@@ -150,23 +155,50 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     /**
      * Determines the parameters used for the redirection.
      * <p>These are used in the string replacelment</p>
-     * @return String - Base64 Decoded JSON that was received.
+     * @return String - Decoded JSON that was received.
      **/
     public String getRedirectionParameters(){
         Map<String,String> params = ApexPages.currentPage().getParameters();
 
         String paramsStr;
-        String results = '{}';
+        String tempResults;
+        String results = null;
+        Map<String, Object> jsonTest;
 
         if( params.containsKey(PARAM_REDIRECTION_PARAMS) ){
             paramsStr = params.get(PARAM_REDIRECTION_PARAMS);
 
             System.debug('paramsStr'); System.debug(paramsStr);
 
+            //-- @TODO: investigate whether to return as Map instead of string.
+            //-- as we want the decoded JSON values here to use in the debug.
+
             try {
-                results = EncodingUtil.base64Decode(paramsStr).toString();
+                tempResults = EncodingUtil.base64Decode(paramsStr).toString();
+
+                jsonTest = (Map<String,Object>)JSON.deserializeUntyped(tempResults);
+                
+                //-- if successful we know this was base64
+                results = tempResults;
             } catch( Exception err){
                 System.debug('param:' + PARAM_REDIRECTION_PARAMS + ': was not base64');
+            }
+
+            if( results == null ){
+                try {
+                    tempResults = EncodingUtil.urlDecode(paramsStr, DEFAULT_URL_ENCODING_SCHEME);
+
+                    jsonTest = (Map<String,Object>)JSON.deserializeUntyped(tempResults);
+                    
+                    //-- if successful we know this was base64
+                    results = tempResults;
+                } catch( Exception err){
+                    System.debug('param:' + PARAM_REDIRECTION_PARAMS + ': was not base64');
+                }
+            }
+
+            if( results == null ){
+                results = DEFAULT_REDIRECTION_PARAMS;
             }
 
             //-- @TODO: review for better functional place to put this.
@@ -256,22 +288,35 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     //-- DEBUG MATERIALS
 
     /**
-     * computes the debug form to calculate a redirect
-     * @param includeDebug;
-     * @return PageReference
+     * Redirects the Debug Form - to the Debug Page.
      **/
-    public PageReference calculateRedirect( Boolean includeDebug ){
+    public PageReference redirectDebugToDebug(){
+        return( createRedirect(null, this.debugRedirectType, this.debugRedirectParams, true) );
+    }
+
+    /**
+     * Redirects the Debug Form - to the target page.
+     **/
+    public PageReference redirectDebugToTarget(){
+        return( createRedirect(null, this.debugRedirectType, this.debugRedirectParams, false) );
+    }
+
+    public static PageReference createRedirect( PageReference targetPage, String redirectType, String redirectParams, Boolean includeDebug ){
         PageReference resultReference;
 
-        String result = ApexPages.currentPage().getUrl();
+        if( targetPage == null ){
+            targetPage = ApexPages.currentPage();
+        }
+
+        String result = targetPage.getUrl();
         if( result.indexOf('?') > -1 ){
             result = result.left(result.indexOf('?'));
         }
         //System.debug('result'); System.debug(result);
 
-        result += '?' + PARAM_REDIRECTION_TYPE + '=' + this.debugRedirectType +
+        result += '?' + PARAM_REDIRECTION_TYPE + '=' + redirectType +
             '&' + PARAM_REDIRECTION_PARAMS + '=' +
-            EncodingUtil.base64Encode( Blob.valueOf(this.debugRedirectParams));
+            EncodingUtil.base64Encode( Blob.valueOf(redirectParams));
         //System.debug('result'); System.debug(result);
 
         if( includeDebug ){
@@ -285,16 +330,35 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     }
 
     /**
-     * Redirects the Debug Form - to the Debug Page.
+     * computes the debug form to calculate a redirect
+     * @param includeDebug;
+     * @return PageReference
      **/
-    public PageReference redirectDebugToDebug(){
-        return( calculateRedirect(true) );
-    }
+    public static PageReference calculateRedirect( PageReference targetPage, String redirectType, String redirectParams, Boolean includeDebug ){
+        PageReference resultReference;
 
-    /**
-     * Redirects the Debug Form - to the target page.
-     **/
-    public PageReference redirectDebugToTarget(){
-        return( calculateRedirect(false) );
+        if( targetPage == null ){
+            targetPage = ApexPages.currentPage();
+        }
+
+        String result = targetPage.getUrl();
+        if( result.indexOf('?') > -1 ){
+            result = result.left(result.indexOf('?'));
+        }
+        //System.debug('result'); System.debug(result);
+
+        result += '?' + PARAM_REDIRECTION_TYPE + '=' + redirectType +
+            '&' + PARAM_REDIRECTION_PARAMS + '=' +
+            EncodingUtil.base64Encode( Blob.valueOf(redirectParams));
+        //System.debug('result'); System.debug(result);
+
+        if( includeDebug ){
+            result += '&' + PARAM_DEBUG + '=true';
+        }
+
+        resultReference = new PageReference(result);
+        resultReference.setRedirect(true);
+
+        return( resultReference );
     }
 }

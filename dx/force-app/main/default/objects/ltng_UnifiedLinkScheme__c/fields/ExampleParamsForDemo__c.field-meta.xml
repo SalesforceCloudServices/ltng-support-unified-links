@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExampleParamsForDemo__c</fullName>
+    <description>It is understood that this will only be used during demos, 
+but by adding this field to the object, it gives much more flexibility 
+for people playing around / giving the demo than using custom metadata/custom settings. 
+
+(As some reference salesforce ids, and must be generated after data loads 
+this avoids the needs for complex dependent deployments, etc.)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Parameters to send for a demo of this URL Scheme</inlineHelpText>
+    <label>Example Params for Demo</label>
+    <length>32768</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>
