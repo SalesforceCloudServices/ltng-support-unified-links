@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Object that codifies a Unified Link / how it behaves and whom can see it.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Unified Link Scheme</label>
+    <nameField>
+        <label>Unified Link Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Unified Link Schemes</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <visibility>Public</visibility>
+    <fields>
+        <fullName>CustomFieldUsingRedirectorSubstitute__c</fullName>
+        <description>Uses a Substitute instead</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(
+
+  /* URL */
+  SUBSTITUTE( &#39;/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams=%7B%22id%22%3A+%22:ID:%22%7D&#39;, &#39;:ID:&#39;, Id),
+
+  /* Friendly Name */
+  &#39;Link to this Record&#39;,
+
+  /* Target */
+  &#39;_blank&#39;
+)</formula>
+        <inlineHelpText>Link to this record using the Unified Link Redirector</inlineHelpText>
+        <label>Custom Field using Redirector Substitute</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CustomFieldUsingRedirector__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(
+
+  /* URL */
+  &#39;/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={"id": "&#39; + Id + &#39;"}&#39;,
+
+  /* Friendly Name */
+  &#39;Link to this Record&#39;,
+
+  /* Target */
+  &#39;_blank&#39;
+)</formula>
+        <inlineHelpText>Link to this record using the Unified Link Redirector</inlineHelpText>
+        <label>Custom Field using Redirector</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>(optional) Description is only shown in large contexts</inlineHelpText>
+        <label>Description</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>ExampleParamsForDemo__c</fullName>
+        <description>It is understood that this will only be used during demos, 
+but by adding this field to the object, it gives much more flexibility 
+for people playing around / giving the demo than using custom metadata/custom settings. 
+
+(As some reference salesforce ids, and must be generated after data loads 
+this avoids the needs for complex dependent deployments, etc.)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Parameters to send for a demo of this URL Scheme</inlineHelpText>
+        <label>Example Params for Demo</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ExternalId__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <description>Used in data loading and updates.</description>
+        <externalId>true</externalId>
+        <inlineHelpText>Unique Id for the icon.</inlineHelpText>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>RedirectionPrompt__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Descriptive message to provide to the user with the {{FIELD}} replacements.
+So they know where they are going.</inlineHelpText>
+        <label>Redirection Prompt</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>UrlSchemeClassic__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL format for Salesforce Classic with handlebars {{JSON_FIELD}} replacements</inlineHelpText>
+        <label>URL Scheme Classic</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>UrlSchemeLightningExperience__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL format for Lightning Experience with handlebars {{JSON_FIELD}} replacements</inlineHelpText>
+        <label>URL Scheme Lightning Experience</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>UrlSchemeMobile__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL format for Mobile with handlebars {{JSON_FIELD}} replacements</inlineHelpText>
+        <label>URL Scheme Mobile</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <webLinks>
+        <fullName>CustomLinkUsingRedirector</fullName>
+        <availability>online</availability>
+        <description>Links to this record using the Redirector</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Custom Link using Redirector</masterLabel>
+        <openType>noSidebar</openType>
+        <protected>false</protected>
+        <url>/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={!URLENCODE(&#39;{"id": "&#39; +  ltng_UnifiedLinkScheme__c.Id + &#39;"}&#39;)}</url>
+    </webLinks>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>ExternalId__c</columns>
+        <columns>Description__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>All</label>
+    </listViews>
+</CustomObject>

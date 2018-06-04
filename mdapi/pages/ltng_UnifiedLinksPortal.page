@@ -1,0 +1,76 @@
+<!--
+/**
+ * Page to accept requests to allow users to accept a page request
+ * and navigate appropriately depending on whether they are in classic
+ * or in lightning.
+ * @page ltng_UnifiedLinksPortal
+ 
+    
+ **/
+-->
+<apex:page controller="ltng_UnifiedLinksPortalCtrl"
+    action="{!redirectUser}"
+    standardStylesheets="false" showHeader="false" sidebar="false"
+    applyHtmlTag="false" applyBodyTag="false" docType="html-5.0"
+>
+    <apex:slds />
+
+    <!-- show a spinner -->
+    <div class='slds-scope'>
+        <apex:pageblock rendered="{!not(debugMode)}">
+        <div role="status" class="slds-spinner slds-spinner_medium">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+        </apex:pageblock>
+
+        <!-- include form to show how to make these links -->
+        <div class='slds-grid slds-grid_align-center'>
+            <div class='slds-col slds-size_1-of-1 slds-large-size_6-of-12'>
+                <div class='slds-page-header slds-m-top_medium slds-m-bottom_medium'>
+                    <div class='slds-media'>
+                        <div class='slds-media__body'>
+                            <h1 class='slds-page-header__title slds-truncate slds-align-middle'
+                                title='{!redirectionPrompt}'
+                            >{! redirectionPrompt }</h1>
+                        </div>
+                    </div>
+                </div>
+                <apex:pageblock rendered="{!debugMode}">
+                    <div class='slds-text-heading_medium slds-m-top_medium'>Debug (?debug was sent)</div>
+                    <div class='redirectionURL'>Currently navigating you to: {! redirectionURL }</div>
+
+                    <div class='slds-text-body_regular'>
+                        @TODO: discuss adding a button. As automated redirects are not usually a great idea / secure.
+                    </div>
+
+                    <apex:form styleClass="slds-form--stacked slds-m-top_medium">
+                        <div class='slds-form-element'>
+                            <div class='slds-text-heading_medium'>Create New Redirect</div>
+                        </div>
+                        <div class='slds-form-element'>
+                            <label class='slds-form-element__label' for='debugRedirectType'>Type</label>
+                            <div class='slds-form-element__control'>
+                                <apex:inputText styleClass="slds-input debugRedirectType" id="debugRedirectType" value="{!debugRedirectType}" />
+                            </div>
+                        </div>
+                        <div class='slds-form-element'>
+                            <label class='slds-form-element__label' for='debugRedirectParams'>Params (JSON)</label>
+                            <div class='slds-form-element__control'>
+                                <apex:inputTextArea styleClass="slds-textarea debugRedirectParams" id="debugRedirectParams" value="{!debugRedirectParams}" />
+                            </div>
+                        </div>
+                        <div class='slds-form-element'>
+                            <apex:commandButton styleClass="slds-button slds-button--brand" action="{!redirectDebugToDebug}" value="Review" />
+                            |
+                            <apex:commandButton styleClass="slds-button slds-button--brand" action="{!redirectDebugToTarget}" value="Execute" />
+                            
+                        </div>
+                    </apex:form>
+                </apex:pageblock>
+            </div>
+        </div>
+
+    </div>
+</apex:page>

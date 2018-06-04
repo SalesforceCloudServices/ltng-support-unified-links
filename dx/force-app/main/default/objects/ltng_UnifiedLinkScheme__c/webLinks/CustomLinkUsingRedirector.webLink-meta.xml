@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CustomLinkUsingRedirector</fullName>
+    <availability>online</availability>
+    <description>Links to this record using the Redirector</description>
+    <displayType>link</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Custom Link using Redirector</masterLabel>
+    <openType>noSidebar</openType>
+    <protected>false</protected>
+    <url>/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={!URLENCODE(&#39;{"id": "&#39; +  ltng_UnifiedLinkScheme__c.Id + &#39;"}&#39;)}</url>
+</WebLink>

@@ -26,15 +26,11 @@ In this case, we defined an object to represent the types of Schemes that are su
 
 And then use the templating (Mustaches {{}}) to translate the parameters sent to the type of URL we would use based on context we are in.
 
-So that the same links that work within Lightning Experience:
-![Demo Lightning Screenshot](docs/images/LinkRedirectorDemoLightning.gif)
-
-Would also work for those in Classic
-![Demo Classic Screenshot](docs/images/LinkRedirectorDemoClassic.gif)
+So that the same link works within Classic, and Lightning Experience.
 
 # TLDR How
 
-** 1. ** In this demonstration, we created an SObject that includes a Templated Classic and Lightning URLs.
+**1.** In this demonstration, we created an SObject that includes a Templated Classic and Lightning URLs.
 
 ![Screenshot of Template Schemes](docs/images/templateSchemes.png)
 
@@ -48,13 +44,72 @@ For the Redirect type of: `SObject`
 
 would provide the URL of:
 	
-	https://YOUR_DOMAIN/apex/ltng_unifiedlinksportal?redirType=SObject&redirParams=eyAiaWQiOiAiYTAwUjAwMDAwMEVvMklaSUFaIiB9
+	https://YOUR_DOMAIN/apex/ltng_unifiedlinksportal?redirType=SObject&
+	redirParams=eyAiaWQiOiAiYTAwUjAwMDAwMEVvMklaSUFaIiB9
 
 or
 
-	https://YOUR_DOMAIN/apex/ltng_unifiedlinksportal?redirType=SObject&redirParams=%7B%20%22id%22%3A%20%22a00R000000Eo2IZIAZ%22%20%7D
+	https://YOUR_DOMAIN/apex/ltng_unifiedlinksportal?redirType=SObject&
+	redirParams=%7B%20%22id%22%3A%20%22a00R000000Eo2IZIAZ%22%20%7D
 
 Either would work.
+
+**2.** We would then need to generate links.
+
+In Formula fields, we can either pre-encode the value using a substitute: <br /> (some browsers automatically will encode for you)
+
+In this case: I wanted to encode:
+
+	{ "id": "SOME_ID_TO_REPLACE" }
+
+So I find the results
+
+	%7B%20%22id%22%3A%20%22SOME_ID_TO_REPLACE%22%20%7D
+
+And then put markers, so it is obvious what is replaced
+
+	%7B%20%22id%22%3A%20%22:ID:%22%20%7D
+
+ex:
+
+	HYPERLINK(
+	
+		/* URL - Substitute(Haystack, needle, replacement) */
+		SUBSTITUTE(
+			'/apex/ltng_unifiedlinksportal?' +
+			'redirType=SObject' + 
+			'&redirParams=%7B%22id%22%3A+%22:ID:%22%7D',
+			':ID:', Id),
+	
+		/* Friendly Name */
+		'Link to this Record',
+		
+		/* Target */
+		'_blank'
+	)
+	
+
+Or Concatenate (combine) the value in:
+
+	HYPERLINK(
+	/* URL */
+		'/apex/ltng_unifiedlinksportal?redirType=SObject&redirParams={"id": "' + Id + '"}',
+		/* Friendly Name */
+		'Link to this Record',
+		/* Target */
+		'_blank'
+	)
+
+Or we can use Custom Links with the `URLEncode` function
+
+	/apex/ltng_unifiedlinksportal?redirType=SObject&redirParams={!URLENCODE('{"id": "' +  ltng_UnifiedLinkScheme__c.Id + '"}')}
+	
+-----
+
+Conversely, we can encode using Base64 - using Apex:
+(Typically used in Emails, etc)
+
+	EncodingUtil.base64Decode(paramsStr).toString();
 
 ---
 
@@ -74,9 +129,9 @@ This works very similar to an App Exchange install.
 
 Please login to an available sandbox and click the link below.
 
-[https://test.salesforce.com/packaging/installPackage.apexp?p0=04t6A000002sreiQAA](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t6A000002sreiQAA)
+[https://test.salesforce.com/packaging/installPackage.apexp?p0=04t6A000002ssZ0QAI](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t6A000002ssZ0QAI)
 
-(or simply navigate to `https://YOUR_SALESFORCE_INSTANCE/packaging/installPackage.apexp?p0= 04t6A000002sreiQAA` <br />
+(or simply navigate to `https://YOUR_SALESFORCE_INSTANCE/packaging/installPackage.apexp?p0=04t6A000002ssZ0QAI` <br />
 if you are already logged in)
 
 ![Install for Admins](docs/images/installPackage.png)
@@ -85,7 +140,7 @@ It is recommended to install for Admins Only (but all options will work)
 
 ##### Run Demo Setup
 
-Next, click on the 'dice' and open the 'URL Hack Demo' app.
+Next, click on the 'dice' and open the 'Unified Links Demo' app.
 
 ![URL Hack Demo App](docs/images/appInLauncher.png)
 
@@ -97,36 +152,13 @@ This will then perform any additional setup (such as creating records, etc).
 
 ##### Run the Demos
 
-Thats it, all information should be avaiable for running all demos now from the `URL Hack Bases` tab.
+Thats it, all information should be avaiable for running all demos now from the `Unified Link Demos` tab.
 
-Feel free to create your own and to create children through the QuickActions, Lightning Actions or List View buttons.
+![Screenshot of Unified Links Demos' page](docs/images/unifiedLinksDemoPage.png)
 
-#### -- Known Issue -- Add the missing permissions on the permission set
-
-If you get an error saying 'This record is not available' (when creating records),
-you are likely affectd by a known issue with Unlocked Package deploys.
-
-(This is also mentioned from the Setup page)
-
-We are working with different teams, but it appears as though the installation works correctly from Salesforce CLI, but requires additional steps from the insllation URL.
-
-**We appologize for this inconvenience and are working towards correcting it**
-
-**1.** Navigate to the 'Dependent Picklist Demo' app
-
-![Find Permission Set](docs/images/appInLauncher.png)
-
-**2.** Navigate to the 'Dependent Picklist Demo Setup' page
-
-![Dependent Picklist Demo page](docs/images/correctPermissionSet.png)
-
-and click on the link **Add the 'Master', 'Type A' and 'Type B' record types to the permission set'**
-
-This will navigate you to the permission set in your org.
-
-**3.** Click edit and enable the record types for that permission set.
-
-![Add record types to permission set](docs/images/correctPermissionSet2.png)
+* Playground - defaults values and allows updating before running
+* Execute - simply runs the link
+* Record - opens to the Record to see how it is set up
 
 ## Installing via the Salesforce CLI
 
@@ -154,11 +186,17 @@ Thats it, you can now open the org, and find the 'ticket' object in the 'all tab
 
 # Bit more detail...
 
-More_detail_on_how_this_was_done
+The redirector must be a VisualForce page (as Lightning Pages are not supported in Classic)
 
-## Component
+We then determine if the User would prefer Lightning Experience through the [following permission: UserPreferencesLightningExperiencePreferred](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_objects_user.htm#UserPreferencesLightningExperiencePreferred) and SOQL Query:
 
-What_about_the_component
+	SELECT Id, UserPreferencesLightningExperiencePreferred
+            FROM User
+            WHERE Id = :targetUserId
+            LIMIT 1
 
-	sample code
+Within Summer '18, we now also have [checkPermission from Feature Management](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_class_System_FeatureManagement.htm#apex_System_FeatureManagement_checkPermission)
+
+	System.FeatureManagement.checkPermission( PERM_LEX_ENABLED )
 	
+We then can replace the template, and redirect the user on 'page action'
