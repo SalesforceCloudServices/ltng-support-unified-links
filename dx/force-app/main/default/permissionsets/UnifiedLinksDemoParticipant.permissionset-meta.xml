@@ -21,6 +21,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>ltng_UnifiedLinkScheme__c.LinkUsingRedirector__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ltng_UnifiedLinkScheme__c.UrlSchemeMobile__c</field>
         <readable>true</readable>

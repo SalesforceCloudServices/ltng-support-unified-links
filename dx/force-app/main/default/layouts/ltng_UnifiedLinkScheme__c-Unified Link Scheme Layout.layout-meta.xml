@@ -65,6 +65,10 @@
         <label>Demo</label>
         <layoutColumns>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>LinkUsingRedirector__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ExampleParamsForDemo__c</field>
             </layoutItems>
