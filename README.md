@@ -54,6 +54,8 @@ or
 
 Either would work.
 
+![Screenshot of How Works](docs/images/howWorks1.gif)
+
 **2.** We would then need to generate links.
 
 In Formula fields, we can either pre-encode the value using a substitute: <br /> (some browsers automatically will encode for you)
