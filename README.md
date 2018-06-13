@@ -34,7 +34,7 @@ So that the same link works within Classic, and Lightning Experience.
 
 ![Screenshot of Template Schemes](docs/images/templateSchemes.png)
 
-So the parameters that we send can either be in base64 or URL Encoded formats.
+So the parameters that we send can either be base64 / URL Encoded or as Separate URL Parameters.
 
 For example:
 
@@ -42,67 +42,38 @@ For example:
 	
 For the Redirect type of: `SObject`
 
-would provide the URL of:
+would be applied to the URL Schemes above to provide the following for a Lightning enabled user:
 	
-	https://YOUR_DOMAIN/apex/ltng_unifiedlinksportal?redirType=SObject&
-	redirParams=eyAiaWQiOiAiYTAwUjAwMDAwMEVvMklaSUFaIiB9
+	/lightning/r/a00R000000Eo2IZIAZ/view
+	
+or the following for a Classic user:
 
-or
-
-	https://YOUR_DOMAIN/apex/ltng_unifiedlinksportal?redirType=SObject&
-	redirParams=%7B%20%22id%22%3A%20%22a00R000000Eo2IZIAZ%22%20%7D
-
-Either would work.
+	/a00R000000Eo2IZIAZ
 
 ![Screenshot of How Works](docs/images/howWorks1.gif)
 
 **2.** We would then need to generate links.
 
-In Formula fields, we can either pre-encode the value using a substitute: <br /> (some browsers automatically will encode for you)
-
-In this case: I wanted to encode:
-
-	{ "id": "SOME_ID_TO_REPLACE" }
-
-So I find the results
-
-	%7B%20%22id%22%3A%20%22SOME_ID_TO_REPLACE%22%20%7D
-
-And then put markers, so it is obvious what is replaced
-
-	%7B%20%22id%22%3A%20%22:ID:%22%20%7D
-
-ex:
-
-	HYPERLINK(
+In Apex, I can easily encode using either:
 	
-		/* URL - Substitute(Haystack, needle, replacement) */
-		SUBSTITUTE(
-			'/apex/ltng_unifiedlinksportal?' +
+	String redirectParams = '{"id":"a00R000000Eo2ItIAJ"}';
+	
+	String base64Encoded = EncodingUtil.base64Encode( Blob.valueOf(redirectParams))
+	
+	String resultUrl = '/apex/ltng_unifiedlinksportal?' +
 			'redirType=SObject' + 
-			'&redirParams=%7B%22id%22%3A+%22:ID:%22%7D',
-			':ID:', Id),
-	
-		/* Friendly Name */
-		'Link to this Record',
-		
-		/* Target */
-		'_blank'
-	)
-	
+			'&redirParams=' + base64Encoded;
 
-Concatenate (combine) the value in:
+Or URL Encoding
 
-	HYPERLINK(
-	/* URL */
-		'/apex/ltng_unifiedlinksportal?redirType=SObject&redirParams={"id": "' + Id + '"}',
-		/* Friendly Name */
-		'Link to this Record',
-		/* Target */
-		'_blank'
-	)
+	String urlEncoded = EncodingUtil.urlEncode(redirectParams, 'UTF-8');
 	
-Or we can pass in URL Parameters (as long as they match exactly the mustache fields) <br /> - but please note that passing strings not encoded can be a concern for things to break:
+	String resultUrl = '/apex/ltng_unifiedlinksportal?' +
+			'redirType=SObject' + 
+			'&redirParams=' + urlEncoded;
+
+In Formula fields, the simplest is to simply send parameters matching the same Mustache key: <br />
+(keep in mind that strings to be sent should be sanitized first)
 
 	HYPERLINK(
 	/* URL */
