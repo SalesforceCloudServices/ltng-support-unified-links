@@ -93,7 +93,7 @@
         <formula>HYPERLINK(
 
   /* URL */
-  &#39;/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={"id": "&#39; + Id + &#39;"}&#39;,
+  &#39;/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={&quot;id&quot;: &quot;&#39; + Id + &#39;&quot;}&#39;,
 
   /* Friendly Name */
   &#39;Link to this Record&#39;,
@@ -202,7 +202,7 @@ So they know where they are going.</inlineHelpText>
         <masterLabel>Custom Link using Redirector</masterLabel>
         <openType>noSidebar</openType>
         <protected>false</protected>
-        <url>/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={!URLENCODE(&#39;{"id": "&#39; +  ltng_UnifiedLinkScheme__c.Id + &#39;"}&#39;)}</url>
+        <url>/apex/ltng_unifiedlinksportal?redirType=SObject&amp;redirParams={!URLENCODE(&#39;{&quot;id&quot;: &quot;&#39; +  ltng_UnifiedLinkScheme__c.Id + &#39;&quot;}&#39;)}</url>
     </webLinks>
     <listViews>
         <fullName>All</fullName>

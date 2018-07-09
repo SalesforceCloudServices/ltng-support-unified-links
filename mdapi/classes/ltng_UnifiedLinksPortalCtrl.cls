@@ -28,6 +28,8 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
     public static final String MUSTACHE_START = '{{';
     /** end of mustache template **/
     public static final String MUSTACHE_END = '}}';
+    /** example regex used to find Mustaches within text **/
+    public static final Pattern MUSTACHE_PATTERN = Pattern.compile('\\{\\{([^}]+)\\}\\}');
 
     /** parameter for the redirection type **/
     public static final String PARAM_REDIRECTION_TYPE = 'redirType';
@@ -53,7 +55,7 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
         Boolean redirectWithLightning = isLightningUser(null);
         String redirectionType = getRedirectionType();
         ltng_UnifiedLinkScheme__c targetScheme = findUnifiedScheme(redirectionType);
-        String redirectionParamsStr = getRedirectionParameters();
+        String redirectionParamsStr = getRedirectionParameters(targetScheme);
         Map<String,String> redirectionParams = convertJSON_toMap(redirectionParamsStr);
         String redirectionTemplate;
 
@@ -157,24 +159,58 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
      * <p>These are used in the string replacelment</p>
      * @return String - Decoded JSON that was received.
      **/
-    public String getRedirectionParameters(){
+    public String getRedirectionParameters(ltng_UnifiedLinkScheme__c targetScheme){
         Map<String,String> params = ApexPages.currentPage().getParameters();
 
         String paramsStr;
-        String tempResults;
         String results = null;
-        Map<String, Object> jsonTest;
 
+        //-- always prefer REDIRECTION_PARAMS, as the other option is more computation intense.
         if( params.containsKey(PARAM_REDIRECTION_PARAMS) ){
             paramsStr = params.get(PARAM_REDIRECTION_PARAMS);
+            results = getRedirectionParametersFromEncodedStr(paramsStr);
+        } else {
+            results = getRedirectionParametersFromSchemeParameters(targetScheme, params);
+        }
 
-            System.debug('paramsStr'); System.debug(paramsStr);
+        if( results == null ){
+            results = DEFAULT_REDIRECTION_PARAMS;
+        }
 
-            //-- @TODO: investigate whether to return as Map instead of string.
-            //-- as we want the decoded JSON values here to use in the debug.
+        return( results );
+    }
 
+    /**
+     * Determines the redirection parameters from an encoded String (base64 or URL encoded)
+     * @param encodedString (String)
+     * @return (String) - String representation of JSON
+     **/
+    public static String getRedirectionParametersFromEncodedStr( String encodedString ){
+        String results;
+        String tempResults;
+        Map<String,Object> jsonTest;
+
+        System.debug('encodedString'); System.debug(encodedString);
+
+        //-- @TODO: investigate whether to return as Map instead of string.
+        //-- as we want the decoded JSON values here to use in the debug.
+
+        //-- try base64
+        try {
+            tempResults = EncodingUtil.base64Decode(encodedString).toString();
+
+            jsonTest = (Map<String,Object>)JSON.deserializeUntyped(tempResults);
+            
+            //-- if successful we know this was base64
+            results = tempResults;
+        } catch( Exception err){
+            System.debug('param:' + PARAM_REDIRECTION_PARAMS + ': was not base64');
+        }
+
+        //-- try url encoding
+        if( results == null ){
             try {
-                tempResults = EncodingUtil.base64Decode(paramsStr).toString();
+                tempResults = EncodingUtil.urlDecode(encodedString, DEFAULT_URL_ENCODING_SCHEME);
 
                 jsonTest = (Map<String,Object>)JSON.deserializeUntyped(tempResults);
                 
@@ -183,28 +219,65 @@ public with sharing class ltng_UnifiedLinksPortalCtrl {
             } catch( Exception err){
                 System.debug('param:' + PARAM_REDIRECTION_PARAMS + ': was not base64');
             }
+        }
 
-            if( results == null ){
-                try {
-                    tempResults = EncodingUtil.urlDecode(paramsStr, DEFAULT_URL_ENCODING_SCHEME);
+        return results;
+    }
 
-                    jsonTest = (Map<String,Object>)JSON.deserializeUntyped(tempResults);
-                    
-                    //-- if successful we know this was base64
-                    results = tempResults;
-                } catch( Exception err){
-                    System.debug('param:' + PARAM_REDIRECTION_PARAMS + ': was not base64');
+    /**
+     * Determines the redirection parameters from the individual URL Parameters requested
+     * @param linkScheme (ltng_UnifiedLinkScheme__c) - scheme to introspect for parameters
+     * @param params (Map<String,String>) - parameters sent to have data pulled from
+     * @return (String) - String representation of JSON
+     **/
+    public static String getRedirectionParametersFromSchemeParameters( ltng_UnifiedLinkScheme__c linkScheme, Map<String,String> params ){
+        String results;
+        String[] patternsToCheck = new String[]{};
+        Set<String> mustacheFields = new Set<String>();
+        Map<String,Object> jsonObject = new Map<String,Object>();
+        Matcher mustacheMatcher;
+
+        if( linkScheme != null && params != null ){
+            //-- find all the mustache templates with the strings, to ensure all are found
+            if( !String.isEmpty(linkScheme.UrlSchemeLightningExperience__c) ){
+                patternsToCheck.add(linkScheme.UrlSchemeLightningExperience__c);
+            }
+            if( !String.isEmpty(linkScheme.UrlSchemeClassic__c) ){
+                patternsToCheck.add(linkScheme.UrlSchemeClassic__c);
+            }
+
+            //-- @INVARIANT: we have a list of all the patterns to check for mustache template keys - without null
+            //System.debug('patternsToCheck:' + patternsToCheck);
+
+            //-- add all mustache fields within all those templates to mustacheFields
+            for( String patternToCheck : patternsToCheck ){
+                mustacheMatcher = MUSTACHE_PATTERN.matcher( patternToCheck );
+
+                //-- NOTE: normally doing a loop in a loop is a big no-no,
+                //-- but due to the structure of Pattern.Matcher - because it cannot do chunking
+                //-- to current knowledge - can't be avoided
+                while( mustacheMatcher.find() ){
+                    mustacheFields.add(mustacheMatcher.group(1));
                 }
             }
 
-            if( results == null ){
-                results = DEFAULT_REDIRECTION_PARAMS;
+            //-- @INVARIANT: mustache fields contains a unique set of all keys to be requested
+            //System.debug('mustache fields:' + mustacheFields);
+
+            //-- assign all parameters matching those keys to the jsonObject
+            for(String mustacheField : mustacheFields){
+                if( params.containsKey(mustacheField) ){
+                    jsonObject.put(mustacheField, params.get(mustacheField));
+                }
             }
 
-            //-- @TODO: review for better functional place to put this.
+            results = JSON.serialize(jsonObject);
+
+            //-- @INVARIANT: all mustache fields defined within all templates with matching paramters are assigned to the jsonObject
+            //System.debug('jsonObject:' + jsonObject);
         }
 
-        return( results );
+        return results;
     }
 
     /**
